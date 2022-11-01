@@ -6,7 +6,7 @@ namespace BethanysPieShop.Controllers
     {
         public IActionResult Index()
         {
-            return Viewd();
+            return View();
         }
     }
 }
