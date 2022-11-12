@@ -28,7 +28,7 @@ namespace BethanysPieShop.Models
             return new ShoppingCart(context) { ShoppingCartId = cartId };
         }
 
-        public void AddToCart(Pie pie)
+        public void AddToCart(Pie pie, int amount)
         {
             var shoppingCartItem =
                     _bethanysPieShopDbContext.ShoppingCartItems.SingleOrDefault(
@@ -40,15 +40,16 @@ namespace BethanysPieShop.Models
                 {
                     ShoppingCartId = ShoppingCartId,
                     Pie = pie,
-                    Amount = 1
+                    Amount = amount
                 };
 
                 _bethanysPieShopDbContext.ShoppingCartItems.Add(shoppingCartItem);
             }
             else
             {
-                shoppingCartItem.Amount++;
+                shoppingCartItem.Amount += amount;
             }
+
             _bethanysPieShopDbContext.SaveChanges();
         }
 
