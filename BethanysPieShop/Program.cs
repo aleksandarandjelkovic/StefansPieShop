@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("BethanysPieShopDbContextConnection") ?? 
+var connectionString = builder.Configuration.GetConnectionString("BethanysPieShopDbContextConnection") ??
     throw new InvalidOperationException("Connection string 'BethanysPieShopDbContextConnection' not found.");
 
 builder.Services.AddControllersWithViews()
@@ -61,7 +61,6 @@ app.MapRazorPages();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/app/{*catchall}", "/App/Index");
-
 
 DbInitializer.Seed(app);
 app.Run();
