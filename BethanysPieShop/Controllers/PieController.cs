@@ -1,6 +1,7 @@
 ﻿using BethanysPieShop.Models;
 using BethanysPieShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Controllers
 {
@@ -8,12 +9,15 @@ namespace BethanysPieShop.Controllers
     {
         private readonly IPieRepository _pieRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly BethanysPieShopDbContext mvcBethanysPieShopDbContext;
 
-        public PieController(IPieRepository pieRepository, ICategoryRepository categoryRepository)
+        public PieController(IPieRepository pieRepository, ICategoryRepository categoryRepository, BethanysPieShopDbContext mvcBethanysPieShopDbContext)
         {
             _pieRepository = pieRepository;
             _categoryRepository = categoryRepository;
+            this.mvcBethanysPieShopDbContext = mvcBethanysPieShopDbContext;
         }
+
 
         //public IActionResult List()
         //{
@@ -24,6 +28,14 @@ namespace BethanysPieShop.Controllers
         //    PieListViewModel piesListViewModel = new PieListViewModel(_pieRepository.AllPies, "All pies");
         //    return View(piesListViewModel);
         //}
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var pies = await mvcBethanysPieShopDbContext.Pies.ToListAsync();
+            return View(pies);
+
+        }
 
         public ViewResult List(string category)
         {
@@ -47,7 +59,7 @@ namespace BethanysPieShop.Controllers
         public IActionResult Details(int id)
         {
             var pie = _pieRepository.GetPieById(id);
-            if(pie == null)
+            if (pie == null)
             {
                 return NotFound();
             }

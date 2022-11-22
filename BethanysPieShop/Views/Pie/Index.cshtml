@@ -1,0 +1,34 @@
+﻿@model List<Pie>
+
+@{
+}
+
+<h1 style="margin-top: 15px; text-align: center">All pies</h1>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>Name</th>
+			<th>Short description</th>
+			<th>Allergy information</th>
+			<th>Price</th>
+			<th>Is pie of the week</th>
+			<th>In stock</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var pie in Model)
+		{
+			<tr>
+				<td>@pie.PieId</td>
+				<td>@pie.Name</td>
+				<td>@pie.ShortDescription</td>
+				<td>@pie.AllergyInformation</td>
+				<td>@pie.Price</td>
+				<td>@pie.IsPieOfTheWeek</td>
+				<td>@pie.InStock</td>
+			</tr>
+		}
+	</tbody>
+</table>
