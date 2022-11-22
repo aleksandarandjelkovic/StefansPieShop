@@ -3,7 +3,12 @@
 @{
 }
 
-<h1 style="margin-top: 15px; text-align: center">All pies</h1>
+<div style="display: flex; justify-content: center; position:relative">
+	<h1 style="margin-top: 15px; text-align: center">All pies</h1>
+	<ul>
+		<a class="btn btn-primary" style="margin-top: 15px; position: absolute; right: 0" asp-controller="Pie" asp-action="Add">Add New Pie</a>
+	</ul>
+</div>
 
 <table class="table">
 	<thead>
