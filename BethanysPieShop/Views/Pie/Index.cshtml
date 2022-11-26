@@ -1,8 +1,5 @@
 ﻿@model List<Pie>
 
-@{
-}
-
 <div style="display: flex; justify-content: center; position:relative">
 	<h1 style="margin-top: 15px; text-align: center">All pies</h1>
 	<ul>
@@ -33,7 +30,51 @@
 				<td>@pie.Price</td>
 				<td>@pie.IsPieOfTheWeek</td>
 				<td>@pie.InStock</td>
+				<td>
+					<button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#Delete" data-pieId="@pie.PieId">Delete</button>
+				</td>
 			</tr>
 		}
 	</tbody>
 </table>
+
+<div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="btn btn-close" data-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body delete-modal-body">
+				<p style="text-align: center">Are you sure you want to delete this pie?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" id="cancel-delete">Cancel</button>
+				<button type="button" class="btn btn-danger" id="submitModal">Delete</button>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" name="hiddenPieId" id="hiddenPieId" />
+</div>
+
+@section Scripts{
+	<script>
+		$(document).ready(function () {
+			$('#deleteButton').click(function (e) {
+				alert("Uso");
+				var pieId = $(e.relatedTarget).data('pieId');
+				console.log(pieId);
+			});
+
+			$('#submitModal').click(function () {
+				$.ajax({
+					url: "/Pie/Delete",
+					type: "POST",
+					data: { pieId: pieId },
+				}).success(function (html) {
+					alert("Pie has been deleted.");
+					$('#Delete').modal('toggle');
+				});
+			});
+		});
+	</script>
+}

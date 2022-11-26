@@ -64,6 +64,22 @@ namespace BethanysPieShop.Controllers
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(int pieId)
+        {
+            var pie = await mvcBethanysPieShopDbContext.Pies.FindAsync(pieId);
+
+            if (pie != null)
+            {
+                mvcBethanysPieShopDbContext.Pies.Remove(pie);
+                await mvcBethanysPieShopDbContext.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public ViewResult List(string category)
         {
             IEnumerable<Pie> pies;
