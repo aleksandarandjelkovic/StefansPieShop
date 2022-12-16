@@ -1,7 +1,5 @@
-﻿@model BethanysPieShop.ViewModels.AddPieViewModel
+﻿@model AddPieViewModel
 
-@{
-}
 
 <h1 style="margin-top: 30px; text-align: center">
     Add a pie
@@ -38,7 +36,10 @@
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Category id</label>
-        <input type="number" class="form-control" asp-for="CategoryId">
+        <select asp-for="CategoryId"
+                class="form-control"
+                asp-items="@(new SelectList(Model.Categories,"CategoryId", "CategoryName"))">
+        </select>
     </div>
     <div class="mb-3">
         <label for="" class="form-label">Is pie of the week?</label>

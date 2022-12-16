@@ -32,7 +32,10 @@ namespace BethanysPieShop.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            return View();
+            AddPieViewModel vm = new AddPieViewModel();
+            vm.Categories = _categoryRepository.AllCategories.ToList();
+
+            return View(vm);
         }
 
         [HttpPost]

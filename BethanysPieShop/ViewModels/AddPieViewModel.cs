@@ -1,4 +1,6 @@
-﻿namespace BethanysPieShop.ViewModels
+﻿using BethanysPieShop.Models;
+
+namespace BethanysPieShop.ViewModels
 {
     public class AddPieViewModel
     {
@@ -12,5 +14,6 @@
         public bool IsPieOfTheWeek { get; set; }
         public bool InStock { get; set; }
         public int CategoryId { get; set; }
+        public List<Category>? Categories { get; set; }
     }
 }
