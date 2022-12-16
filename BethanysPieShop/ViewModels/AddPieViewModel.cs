@@ -4,6 +4,7 @@ namespace BethanysPieShop.ViewModels
 {
     public class AddPieViewModel
     {
+        public int PieId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? ShortDescription { get; set; }
         public string? LongDescription { get; set; }

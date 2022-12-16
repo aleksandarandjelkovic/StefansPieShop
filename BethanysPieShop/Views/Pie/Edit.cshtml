@@ -1,4 +1,4 @@
-﻿@model UpdatePieViewModel
+﻿@model AddPieViewModel
 
 <h1 class="display-6 mt-3">
 	Edit a pie
@@ -37,10 +37,13 @@
 		<input type="text" class="form-control" asp-for="ImageThumbnailUrl">
 	</div>
 	<div class="mb-3">
+		<label for="" class="form-label">Category id</label>
+		<input type="number" class="form-control" asp-for="CategoryId" readonly>
+	</div>
+	<div class="mb-3">
 		<label for="" class="form-label">Category</label>
 		<select asp-for="CategoryId"
-				class="form-control"
-				asp-items="@(new SelectList(Model.Categories,"CategoryId", "CategoryName"))">
+				class="form-control" asp-items="@(new SelectList(Model.Categories,"CategoryId", "CategoryName"))">
 		</select>
 	</div>
 	<div class="mb-3">

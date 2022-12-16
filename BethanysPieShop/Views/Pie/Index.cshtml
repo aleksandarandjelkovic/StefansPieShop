@@ -10,7 +10,6 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>ID</th>
 			<th>Name</th>
 			<th>Short description</th>
 			<th>Allergy information</th>
@@ -23,14 +22,13 @@
 		@foreach (var pie in Model)
 		{
 			<tr>
-				<td>@pie.PieId</td>
 				<td>@pie.Name</td>
 				<td>@pie.ShortDescription</td>
 				<td>@pie.AllergyInformation</td>
 				<td>@pie.Price</td>
 				<td>@pie.IsPieOfTheWeek</td>
 				<td>@pie.InStock</td>
-				<td><a class="btn btn-primary">Edit</a></td>
+				<td><a class="btn btn-primary" asp-controller="Pie" asp-action="Edit" asp-route-id="@pie.PieId">Edit</a></td>
 				<td>
 					<button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#Delete" data-pieId="@pie.PieId">Delete</button>
 				</td>

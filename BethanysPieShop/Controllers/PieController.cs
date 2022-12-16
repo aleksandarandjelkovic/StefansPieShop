@@ -60,11 +60,37 @@ namespace BethanysPieShop.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var pie = await mvcBethanysPieShopDbContext.Pies.FirstOrDefaultAsync(p => p.PieId == id);
+
+            if (pie != null)
+            {
+                var viewModel = new AddPieViewModel()
+                {
+                    PieId = pie.PieId,
+                    Name = pie.Name,
+                    ShortDescription = pie.ShortDescription,
+                    LongDescription = pie.LongDescription,
+                    AllergyInformation = pie.AllergyInformation,
+                    Price = pie.Price,
+                    ImageUrl = pie.ImageUrl,
+                    ImageThumbnailUrl = pie.ImageThumbnailUrl,
+                    CategoryId = pie.CategoryId,
+                    Categories = _categoryRepository.AllCategories.ToList(),
+                    IsPieOfTheWeek = pie.IsPieOfTheWeek,
+                    InStock = pie.InStock
+                };
+                return await Task.Run(() => View("Edit", viewModel));
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var pies = await mvcBethanysPieShopDbContext.Pies.ToListAsync();
             return View(pies);
-
         }
 
         [HttpPost]
