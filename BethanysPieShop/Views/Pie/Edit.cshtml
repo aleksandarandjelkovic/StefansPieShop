@@ -1,0 +1,54 @@
+﻿@model UpdatePieViewModel
+
+<h1 class="display-6 mt-3">
+	Edit a pie
+</h1>
+<form method="post" asp-controller="Pie" asp-action="Edit" class="mt-3">
+	<div class="mb-3">
+		<label for="" class="form-label">ID</label>
+		<input type="number" class="form-control" asp-for="PieId" readonly>
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Name</label>
+		<input type="text" class="form-control" asp-for="Name">
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Short description</label>
+		<input type="text" class="form-control" asp-for="ShortDescription">
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Long description</label>
+		<input type="text" class="form-control" asp-for="LongDescription">
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Allergy information</label>
+		<input type="text" class="form-control" asp-for="AllergyInformation">
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Price</label>
+		<input type="number" class="form-control" asp-for="Price">
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Image url</label>
+		<input type="text" class="form-control" asp-for="ImageUrl">
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Image thumbnail url</label>
+		<input type="text" class="form-control" asp-for="ImageThumbnailUrl">
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Category</label>
+		<select asp-for="CategoryId"
+				class="form-control"
+				asp-items="@(new SelectList(Model.Categories,"CategoryId", "CategoryName"))">
+		</select>
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">Is pie of the week?</label>
+		<input type="checkbox" asp-for="IsPieOfTheWeek">
+	</div>
+	<div class="mb-3">
+		<label for="" class="form-label">In stock</label>
+		<input type="checkbox" asp-for="InStock">
+	</div>
+</form>
