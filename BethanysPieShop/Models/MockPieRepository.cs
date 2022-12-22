@@ -21,9 +21,29 @@
             }
         }
 
+        public Task DeletePie(int pieId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Pie? GetPieById(int pieId) => AllPies.FirstOrDefault(p => p.PieId == pieId);
 
+        public Task SavePieAsync(Pie pie)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Pie> SearchPies(string searchQuery)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdatePieAsync(Pie pie)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Pie?> IPieRepository.GetPieById(int pieId)
         {
             throw new NotImplementedException();
         }

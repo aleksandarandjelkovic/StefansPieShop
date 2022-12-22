@@ -27,6 +27,11 @@ namespace BethanysPieShop.Controllers
 
         public RedirectToActionResult AddToShoppingCart(int pieId, int amount)
         {
+            if(amount == 0)
+            {
+                amount = 1;
+            }
+
             var selectedPie = _pieRepository.AllPies.FirstOrDefault(p => p.PieId == pieId);
 
             if (selectedPie != null)
@@ -37,9 +42,9 @@ namespace BethanysPieShop.Controllers
             return RedirectToAction("Index");
         }
 
-        public RedirectToActionResult RemoveFromShoppingCart(int pieId)
+        public async Task<RedirectToActionResult> RemoveFromShoppingCart(int pieId)
         {
-            var selectedPie = _pieRepository.GetPieById(pieId);
+            var selectedPie = await _pieRepository.GetPieById(pieId);
             _shoppingCart.RemoveFromCart(selectedPie!);
 
             return RedirectToAction("Index");

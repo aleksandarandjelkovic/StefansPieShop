@@ -4,7 +4,10 @@
     {
         IEnumerable<Pie> AllPies { get; }
         IEnumerable<Pie> PiesOfTheWeek { get; }
-        Pie? GetPieById(int pieId);
+        Task<Pie?> GetPieById(int pieId);
         IEnumerable<Pie> SearchPies(string searchQuery);
+        Task SavePieAsync(Pie pie);
+        Task DeletePie(int pieId);
+        Task UpdatePieAsync(Pie pie);
     }
 }

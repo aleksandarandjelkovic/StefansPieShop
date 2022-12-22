@@ -1,7 +1,6 @@
 ﻿using BethanysPieShop.Models;
 using BethanysPieShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BethanysPieShop.Controllers
 {
@@ -9,31 +8,20 @@ namespace BethanysPieShop.Controllers
     {
         private readonly IPieRepository _pieRepository;
         private readonly ICategoryRepository _categoryRepository;
-        private readonly BethanysPieShopDbContext mvcBethanysPieShopDbContext;
 
-        public PieController(IPieRepository pieRepository, ICategoryRepository categoryRepository, BethanysPieShopDbContext mvcBethanysPieShopDbContext)
+        public PieController(IPieRepository pieRepository, ICategoryRepository categoryRepository)
         {
             _pieRepository = pieRepository;
             _categoryRepository = categoryRepository;
-            this.mvcBethanysPieShopDbContext = mvcBethanysPieShopDbContext;
         }
-
-
-        //public IActionResult List()
-        //{
-        //    //ViewBag.CurrentCategory = "Cheese cakes";
-
-        //    //return View(_pieRepository.AllPies);
-
-        //    PieListViewModel piesListViewModel = new PieListViewModel(_pieRepository.AllPies, "All pies");
-        //    return View(piesListViewModel);
-        //}
 
         [HttpGet]
         public IActionResult Add()
         {
-            AddPieViewModel vm = new AddPieViewModel();
-            vm.Categories = _categoryRepository.AllCategories.ToList();
+            AddPieViewModel vm = new AddPieViewModel()
+            {
+                Categories = _categoryRepository.AllCategories.ToList()
+            };
 
             return View(vm);
         }
@@ -54,15 +42,16 @@ namespace BethanysPieShop.Controllers
                 InStock = addPieRequest.InStock,
                 CategoryId = addPieRequest.CategoryId
             };
-            await mvcBethanysPieShopDbContext.Pies.AddAsync(pie);
-            await mvcBethanysPieShopDbContext.SaveChangesAsync();
-            return RedirectToAction("Add");
+
+            await _pieRepository.SavePieAsync(pie);
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var pie = await mvcBethanysPieShopDbContext.Pies.FirstOrDefaultAsync(p => p.PieId == id);
+            var pie = await _pieRepository.GetPieById(id);
 
             if (pie != null)
             {
@@ -86,25 +75,42 @@ namespace BethanysPieShop.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
+        [HttpPost]
+        public async Task<IActionResult> Edit(AddPieViewModel editPieReqest)
         {
-            var pies = await mvcBethanysPieShopDbContext.Pies.ToListAsync();
+            var pie = await _pieRepository.GetPieById(editPieReqest.PieId);
+
+            if (pie != null)
+            {
+                pie.Name = editPieReqest.Name;
+                pie.ShortDescription = editPieReqest.ShortDescription;
+                pie.LongDescription = editPieReqest.LongDescription;
+                pie.AllergyInformation = editPieReqest.AllergyInformation;
+                pie.Price = editPieReqest.Price;
+                pie.ImageUrl = editPieReqest.ImageUrl;
+                pie.ImageThumbnailUrl = editPieReqest.ImageThumbnailUrl;
+                pie.CategoryId = editPieReqest.CategoryId;
+                pie.IsPieOfTheWeek = editPieReqest.IsPieOfTheWeek;
+                pie.InStock = editPieReqest.InStock;
+
+                await _pieRepository.UpdatePieAsync(pie);
+
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var pies = _pieRepository.AllPies.ToList();
             return View(pies);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(int pieId)
         {
-            var pie = await mvcBethanysPieShopDbContext.Pies.FindAsync(pieId);
-
-            if (pie != null)
-            {
-                mvcBethanysPieShopDbContext.Pies.Remove(pie);
-                await mvcBethanysPieShopDbContext.SaveChangesAsync();
-
-                return RedirectToAction("Index");
-            }
+            await _pieRepository.DeletePie(pieId);
 
             return RedirectToAction("Index");
         }

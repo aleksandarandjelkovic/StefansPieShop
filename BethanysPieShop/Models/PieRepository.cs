@@ -27,14 +27,34 @@ namespace BethanysPieShop.Models
             }
         }
 
-        public Pie? GetPieById(int pieId)
+        public async Task<Pie?> GetPieById(int pieId)
         {
-            return _bethanysPieShopDbContext.Pies.FirstOrDefault(p => p.PieId == pieId);
+            return await _bethanysPieShopDbContext.Pies.FirstOrDefaultAsync(p => p.PieId == pieId);
         }
 
         public IEnumerable<Pie> SearchPies(string searchQuery)
         {
             return _bethanysPieShopDbContext.Pies.Where(p => p.Name.Contains(searchQuery));
         }
+
+        public async Task SavePieAsync(Pie pie)
+        {
+            await _bethanysPieShopDbContext.Pies.AddAsync(pie);
+            await _bethanysPieShopDbContext.SaveChangesAsync();
+        }
+
+        public async Task DeletePie(int pieId)
+        {
+            var pie = await GetPieById(pieId);
+            _bethanysPieShopDbContext.Pies.Remove(pie!);
+            await _bethanysPieShopDbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdatePieAsync(Pie pie)
+        {
+            _bethanysPieShopDbContext.Pies.Update(pie);
+            await _bethanysPieShopDbContext.SaveChangesAsync();
+        }
+
     }
 }
