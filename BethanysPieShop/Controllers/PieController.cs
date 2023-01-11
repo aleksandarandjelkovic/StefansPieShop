@@ -155,6 +155,55 @@ namespace BethanysPieShop.Controllers
             return View(new AllPiesViewModel(pies, categories, currentCategory));
         }
 
+        public ViewResult SearchPie(int categoryId, string pieName)
+        {
+            var result = new List<Pie>();
+            var category = _categoryRepository.GetCategoryById(categoryId);
+
+            if (category == null && string.IsNullOrEmpty(pieName) && categoryId == 0)
+            {
+                result = _pieRepository.AllPies.ToList();
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(pieName))
+                {
+                    result = _pieRepository.AllPies.Where(p => p.CategoryId == categoryId).ToList();
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(pieName) && categoryId == 0)
+                    {
+                        result = _pieRepository.AllPies.Where(p => p.Name.ToLower().Contains(pieName.ToLower())).ToList();
+                    }
+                    else
+                    {
+                        result = _pieRepository.AllPies.ToList();
+                    }
+                }
+            }
+
+            var vm = new AllPiesViewModel(result, _categoryRepository.AllCategories.ToList());
+
+            return View("AllPies", vm);
+        }
+
+        public IActionResult SearchQuery(string pieName)
+        {
+            List<Pie> result;
+
+            if (pieName != "" && pieName != null)
+            {
+                result = _pieRepository.AllPies.Where(p => p.Name.Contains(pieName)).ToList();
+            }
+            else
+
+                result = _pieRepository.AllPies.ToList();
+
+            return View("AllPies");
+
+        }
+
         public IActionResult Details(int id)
         {
             var pie = _pieRepository.GetPieById(id);

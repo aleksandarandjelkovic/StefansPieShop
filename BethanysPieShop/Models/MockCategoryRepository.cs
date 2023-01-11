@@ -9,5 +9,10 @@
                 new Category{CategoryId = 2, CategoryName = "Cheese cakes", Description = "Cheesy all the way"},
                 new Category{CategoryId = 3, CategoryName = "Seasonal pies", Description = "Get in the mood for a seasonal pie"}
             };
+
+        public Category GetCategoryById(int categoryId)
+        {
+            return AllCategories.FirstOrDefault(c => c.CategoryId == categoryId)!;
+        }
     }
 }

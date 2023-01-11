@@ -10,5 +10,10 @@
         }
 
         public IEnumerable<Category> AllCategories => _bethanysPieShopDbContext.Categories.OrderBy(p => p.CategoryName);
+
+        public Category GetCategoryById(int categoryId)
+        {
+            return AllCategories.FirstOrDefault(c => c.CategoryId == categoryId)!;
+        }
     }
 }

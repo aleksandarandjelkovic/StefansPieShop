@@ -2,18 +2,24 @@
 
 <h1 style="display:inline; margin-top: 20px; margin-bottom: 20px">All Pies</h1>
 
-<div style="display:inline; margin-top: 20px; margin-bottom: 100px">
-	<label style="margin-left: 150px; display: inline;">Name of pie:</label>
-	<input id="txtPieName" type="text" />
-	<label style="margin-left: 50px; display: inline;">Pie Category:</label>
-	<select asp-for="CategoryId"
-			class="form-control" asp-items="@(new SelectList(Model.Categories,"CategoryId", "CategoryName"))" style="width: 180px; height: 34px; display: inline">
-	</select>
-	<button id="searchButton" class="btn btn-secondary">Search</button>
+<div style="display:inline-block; margin-left: 20px;margin-top: 20px; margin-bottom: 10px">
+	<form method="post" asp-controller="Pie" asp-action="SearchPie">
+		<div>
+			<label>Name of pie:</label>
+			<input id="txtPieName" type="text" name="pieName" />
+			<label>Pie Category:</label>
+			<select asp-for="CategoryId" name="categoryId"
+					class="form-control" asp-items="@(new SelectList(Model.Categories,"CategoryId", "CategoryName"))" style="width: 180px; height: 34px; display: inline">
+				<option>All Pies</option>
+			</select>
+			<button type="submit" class="btn btn-secondary">Search</button>
+		</div>
+
+		<table id="tblPies" cellpadding="0" cellspacing="0">
+			<tbody></tbody>
+		</table>
+	</form>
 </div>
-<table id="tblPies" cellpadding="0" cellspacing="0">
-	<tbody></tbody>
-</table>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
 	@foreach (var pie in Model.Pies)
@@ -21,3 +27,41 @@
 		<partial name="_PieCard" model="pie" />
 	}
 </div>
+
+@section scripts{
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("button").click(function () {
+				var searchQuery = $.trim($("#txtPieName").val());
+				$("tbody").html("");
+				$.ajax({
+					type: "POST",
+					url: "/api/Search",
+					data: "\"" + searchQuery + "\"",
+					contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					success: function (pies) {
+						$.each(pies, function (i, pie) {
+							$("tbody").append($("<tr>"));
+							appendElement = $("tbody tr").last();
+							appendElement.append($("<td>").html('<img src=' + pie.imageThumbnailUrl + ' width=250 class="rounded m-2">'));
+							appendElement.append($("<td>").html('<h2><a href="/pie/details/' + pie.pieId + '" class="pie-link">' + pie.name + '</a></h2>'));
+						});
+					},
+					error: function (xhr, status, error) {
+						console.log(xhr)
+					}
+				});
+			});
+		});
+
+	</script>
+
+	<script>
+		$(function () {
+			$("#search-text").click(function () {
+				$("Form").submit();
+			})
+		});
+	</script>
+}
